@@ -3,6 +3,10 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.HashSet;
 
 public class Main {
@@ -15,6 +19,19 @@ public class Main {
         for (Element image : elements) {
             images.add(image.attr("abs:src"));
         }
-        System.out.println(images);
+
+        int number = 1;
+        for (String link : images) {
+            String extension = link
+                    .replaceAll("^.+\\.", "")
+                    .replace("?.+$", "");
+
+            String filePath = "data/" + number++ + "." + extension;
+        }
+
+    }
+    public static void download(String url) throws IOException {
+        URLConnection connection = new URL(url).openConnection();
+        InputStream inputStream = connection.getInputStream();
     }
 }
