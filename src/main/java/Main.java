@@ -1,6 +1,5 @@
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.FileOutputStream;
@@ -9,6 +8,7 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URLConnection;
 import java.util.HashSet;
+import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) throws Exception {
@@ -16,10 +16,9 @@ public class Main {
         Document document = Jsoup.connect(url).get();
         Elements elements = document.select("img");
 
-        HashSet<String> images = new HashSet<>();
-        for (Element image : elements) {
-            images.add(image.attr("abs:src"));
-        }
+        HashSet<String> images = elements.stream()
+                .map(image -> image.attr("abs:src"))
+                .collect(Collectors.toCollection(HashSet::new));
 
         int number = 1;
         for (String link : images) {
