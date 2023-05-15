@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URLConnection;
 import java.util.HashSet;
 import java.util.stream.Collectors;
@@ -34,9 +35,8 @@ public class Main {
         }
     }
 
-    public static void download(String url, String path) throws IOException {
-        URI uri = URI.create(url);
-        URLConnection connection = uri.toURL().openConnection();
+    public static void download(String url, String path) throws IOException, URISyntaxException {
+        URLConnection connection = new URI(url).toURL().openConnection();
         InputStream inputStream = connection.getInputStream();
         try (FileOutputStream outputStream = new FileOutputStream(path)) {
             int b;
